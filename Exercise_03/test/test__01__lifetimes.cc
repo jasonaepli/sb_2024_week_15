@@ -85,7 +85,7 @@ TEST_CASE("lifecycle events")
   SECTION("scenario 3")
   {
     {
-      Tracker t_1;
+      Tracker t_1 = Tracker();
       Tracker t_2(t_1);
     }
 
@@ -119,6 +119,22 @@ TEST_CASE("lifecycle events")
       Tracker t_1 = Tracker();
       Tracker t_2 = std::move(t_1);
       Tracker t_3 = t_1;
+    }
+
+    CHECK(Tracker::sm_N_default_ctors == 0); // FIX THIS AND EXPLAIN WHY
+    CHECK(Tracker::sm_N_copy_ctors    == 0); // FIX THIS AND EXPLAIN WHY
+    CHECK(Tracker::sm_N_move_ctors    == 0); // FIX THIS AND EXPLAIN WHY
+    CHECK(Tracker::sm_N_copy_assigns  == 0); // FIX THIS AND EXPLAIN WHY
+    CHECK(Tracker::sm_N_move_assigns  == 0); // FIX THIS AND EXPLAIN WHY
+    CHECK(Tracker::sm_N_dtors         == 0); // FIX THIS AND EXPLAIN WHY
+  }
+
+  SECTION("scenario 6")
+  {
+    {
+      Tracker t_1 = Tracker();
+      Tracker t_2 = t_1;
+      t_2 = std::move(t_1);
     }
 
     CHECK(Tracker::sm_N_default_ctors == 0); // FIX THIS AND EXPLAIN WHY
